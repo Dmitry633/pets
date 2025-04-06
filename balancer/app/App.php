@@ -146,26 +146,64 @@ $articles = $xls_values;
     return $articles;
 
 }
+
+
+/*
+function makeDigits() {//попробовать в качестве аргумета $item['C']
+  echo "до if makeDigits:" . "\n";
+  var_dump ($item['C']);
+
+  if ((!preg_match('/[^\d]/',(string)$item['C']))) {
+    $item['C'] = strval($item['C']);
+
+    echo "внутри только числового случая makeDigits:" . "\n";
+    var_dump ($item['C']);
+    //str_pad();
+    $requestList[$item['C']] = $item['D'];
+
+  } else {
+    echo "внутри НЕ только числового случая makeDigits:" . "\n";
+    var_dump ($item['C']);
+
+    $requestList[$item['C']] = $item['D'];
+  }
+}
+*/
 $safficientListBy = [];
 $safficientListAfar = [];
 $requestList = [];
+
 function getVendor (array $getedArr) {
   global $requestList;
   
   foreach ($getedArr as $item) {
-    if ($item['B'] == 'Наименование')
+    if ($item['C'] == 'Наименование')
       continue;
-  
+    
+    if ((!preg_match('/[^\d]/',(string)$item['B']))) {
+      // $item['C'] = strval($item['C']);
+      $item['B'] = str_pad((string)$item['B'], (mb_strlen((string)$item['B'])+1), '0', STR_PAD_LEFT);
+    }
+    
     match (1) {
-      (preg_match('/(?i)(iek)/',$item['B'])) => $demandIEK[] = $item,// print 'эту позицию необходимо искать в остатках ИЭК' . "\n",
-      (preg_match('/(?i)(ekf)/',$item['B'])) =>  $demandEKF[] = $item,// print 'эту позицию необходимо искать в остатках ЭКФ'. "\n",
-      (preg_match('/(?i)(dek)|(?i)(se)/',$item['B'])) =>  $demandSE[] = $item,
-      (preg_match('/(?i)(tdm)/',$item['B'])) =>  $demandTDM[] = $item,
-      default => $requestList[$item['C']] = $item['D'], 
+      (preg_match('/(?i)(iek)/',$item['C'])) => $demandIEK[] = $item,// print 'эту позицию необходимо искать в остатках ИЭК' . "\n",
+      (preg_match('/(?i)(ekf)/',$item['C'])) =>  $demandEKF[] = $item,// print 'эту позицию необходимо искать в остатках ЭКФ'. "\n",
+      (preg_match('/(?i)(dek)|(?i)(systeme)/',$item['C'])) =>  $demandSE[] = $item,
+      (preg_match('/(?i)(tdm)/',$item['C'])) =>  $demandTDM[] = $item,
+      default => $requestList[(string)$item['B']] = $item['D'], //помесить сюда функцию, которя в качестве ключа представляет строку вместо числа
+      // default => makeDigits(),
+      //((!preg_match('/[^\d]/',(string)$item['C']))) => str_pad((string)$item['C'], (mb_strlen((string)$item['C'])+1), '0', STR_PAD_LEFT);
     };
+    
+    if(is_null($demandIEK))$demandIEK = [];
+    if(is_null($demandEKF))$demandEKF = [];
+    if(is_null($demandSE))$demandSE = [];
+    if(is_null($demandTDM))$demandTDM = [];
+    
   }
-  
-
+  // echo 'Список к запросу:'. "\n";
+  //   var_dump ($requestList);
+  //изменить колонки в соответсвии с АО
   return [$demandIEK, $demandEKF, $demandSE,$demandTDM];
 }
 
@@ -201,6 +239,7 @@ function makeBalancesTDM(array $balancesList): array {
   return $storageTDM;
 }
 
+
 function getMatches (array $balances, array $demand): array {
 
   $storage = [];
@@ -214,21 +253,21 @@ function getMatches (array $balances, array $demand): array {
   }
 
   foreach($demand as $subArr){
-    $item[]=array ($subArr['C'], $subArr['D']);
-    $itemArticle[]=$subArr['C'];
+    $item[]=array ($subArr['B'], $subArr['D']);
+    $itemArticle[]=$subArr['B'];
   }
   
   $storageArticle = array_map('strtoupper', $storageArticle);
   $itemArticle = array_map('strtoupper', $itemArticle);
   $absentBalance = [];
   foreach(array_diff($itemArticle, $storageArticle) as $absentPos){
-    echo 'Позиция '. $absentPos. ' отсутсвтует в остатках'. "\n";
+    // echo 'Позиция '. $absentPos. ' отсутсвтует в остатках'. "\n";
     $absentBalance[] = $absentPos;
   };
 for($i = 0; $i<count($item); $i++){
   foreach($absentBalance as $absentPos){
     if(strcasecmp($item[$i][0], $absentPos) == 0){
-      echo "Требуется запросить позицию ". $item[$i][0] . " в количестве ". $item[$i][1]. "\n";
+      // echo "Требуется запросить позицию ". $item[$i][0] . " в количестве ". $item[$i][1]. "\n";
       $articleRequest[] = $item[$i][0];
       $quantityRequest[] = $item[$i][1];
 
@@ -252,7 +291,7 @@ for($i = 0; $i<count($item); $i++){
     if (strcasecmp($need[0], $storage[$i][0]) == 0) {
       
       if ($storage[$i][2] > $need[1]){
-        echo 'Позиции '. $need[0] . ' достаточно в НСК'. "\n";
+        // echo 'Позиции '. $need[0] . ' достаточно в НСК'. "\n";
         $articleSufficientBy[]= $need[0];
         $quantitySufficientBy[] = $need[1];
 
@@ -293,23 +332,28 @@ for($i = 0; $i<count($item); $i++){
         $quantityRequest[] = $need[1];
         // $requestList[] = [$need[0],$need[1]];
       }
-  
-    
     }
-
     }
-  
   }
+  
   // static $requestList = [], $safficientListBy = [], $safficientListAfar = [];
   global $requestList, $safficientListBy, $safficientListAfar;
+  // echo 'Предытоговый вывод списка к запросу:' ."\n";
+  // var_dump($requestList);
   if (is_null($articleRequest)) $articleRequest[] = 'ошибочный артикул';
   if (is_null($quantityRequest)) $quantityRequest[] = '0';
+  // echo ':' ."\n";
 
   $requestListTemp = array_combine($articleRequest,$quantityRequest);
+  // echo 'Временный список к запросу:' ."\n";
+  // print_r($requestListTemp);
   $safficientListByTemp = array_combine($articleSufficientBy,$quantitySufficientBy);
   $safficientListAfarTemp = array_combine($articleSufficientAfar,$quantitySufficientAfar);
   
-  $requestList = array_merge($requestList,$requestListTemp);
+  
+  $requestList = array_merge($requestList,$requestListTemp);// ключи могут "потеряться" в результате преобразования массива с помощью функций array_*()
+  // echo 'Итоговый список к запросу:' ."\n";
+  // print_r($requestList);
   $safficientListBy = array_merge($safficientListBy,$safficientListByTemp);
   $safficientListAfar = array_merge($safficientListAfar,$safficientListAfarTemp);
   /*
@@ -324,3 +368,4 @@ for($i = 0; $i<count($item); $i++){
   */
   return [$requestList, $safficientListBy, $safficientListAfar];
 }
+ 

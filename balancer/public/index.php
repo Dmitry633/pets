@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types = 1);
-
+error_reporting(E_ALL & ~E_WARNING);
 $root = dirname(__DIR__, 5) . DIRECTORY_SEPARATOR;
 // echo $root;
 
@@ -54,7 +54,6 @@ $vendorsDemandArr = getVendor($demandArr);// [взять наименовани�
 getMatches($storageIEK, $vendorsDemandArr[0]);
 getMatches($storageEKF, $vendorsDemandArr[1]);
 getMatches($storageSE, $vendorsDemandArr[2]);
-
 getMatches($storageTDM, $vendorsDemandArr[3]);
 
 require VIEWS_PATH . 'balances.php';

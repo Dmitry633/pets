@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Balances</title>
+        <title>Balancer</title>
         <style>
             table {
                 width: 100%;
@@ -36,6 +36,15 @@
                     <?php foreach ($dateToScreen as $date): ?>
                         <td><?=  $date ?></td>
                     <?php endforeach ?>
+
+                </tr>
+                <tr>
+                    <th colspan="2"> Количество позиций всего: </th>
+                </tr>
+                <tr>
+                    <?php ?>
+                        <td><?=  count($requestList) + count($safficientListBy) + count($safficientListAfar) ?></td>
+                    <?php ?>
 
                 </tr>
                 <tr>
