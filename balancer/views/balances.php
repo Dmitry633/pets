@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Balancer</title>
+        <title>Balances</title>
         <style>
             table {
                 width: 100%;
@@ -43,7 +43,7 @@
                 </tr>
                 <tr>
                     <?php ?>
-                        <td><?=  count($requestList) + count($safficientListBy) + count($safficientListAfar) ?></td>
+                        <td><?=  count($requestList) + count($safficientListBy) + count($safficientListAfar) - array_count_values(array_keys($requestList))['ошибочный артикул'] ?></td>
                     <?php ?>
 
                 </tr>

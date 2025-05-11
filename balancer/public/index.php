@@ -4,16 +4,17 @@ declare(strict_types = 1);
 error_reporting(E_ALL & ~E_WARNING);
 $root = dirname(__DIR__, 5) . DIRECTORY_SEPARATOR;
 // echo $root;
+// echo dirname(__DIR__);
 
 define('APP_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'app'. DIRECTORY_SEPARATOR);
-define('IEK', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR .'I'. DIRECTORY_SEPARATOR . 'II' . DIRECTORY_SEPARATOR . 'IEK'. DIRECTORY_SEPARATOR);
-define('EKF', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR .'I'. DIRECTORY_SEPARATOR . 'II' . DIRECTORY_SEPARATOR . 'EKF'. DIRECTORY_SEPARATOR);
-define('SE', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR .'I'. DIRECTORY_SEPARATOR . 'II' . DIRECTORY_SEPARATOR . 'Систэм Электрик (Шнейдер)'. DIRECTORY_SEPARATOR . 'Шнейдер остатки'. DIRECTORY_SEPARATOR . 'Екатеринбург'. DIRECTORY_SEPARATOR);
-define('TDM', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR .'I'. DIRECTORY_SEPARATOR . 'II' . DIRECTORY_SEPARATOR . 'ТДМ'. DIRECTORY_SEPARATOR . 'МСК'. DIRECTORY_SEPARATOR);
+define('IEK', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR .'02 ПРАЙСЫ ПОСТАВЩИКОВ'. DIRECTORY_SEPARATOR . '01. НВО Прайсы и остатки' . DIRECTORY_SEPARATOR . 'ИЭК'. DIRECTORY_SEPARATOR);
+define('EKF', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR .'02 ПРАЙСЫ ПОСТАВЩИКОВ'. DIRECTORY_SEPARATOR . '01. НВО Прайсы и остатки' . DIRECTORY_SEPARATOR . 'ЭКФ'. DIRECTORY_SEPARATOR);
+define('SE', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR .'02 ПРАЙСЫ ПОСТАВЩИКОВ'. DIRECTORY_SEPARATOR . '01. НВО Прайсы и остатки' . DIRECTORY_SEPARATOR . 'Систэм Электрик (Шнейдер)'. DIRECTORY_SEPARATOR . 'Шнейдер остатки'. DIRECTORY_SEPARATOR . 'Екатеринбург'. DIRECTORY_SEPARATOR);
+define('TDM', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR .'02 ПРАЙСЫ ПОСТАВЩИКОВ'. DIRECTORY_SEPARATOR . '01. НВО Прайсы и остатки' . DIRECTORY_SEPARATOR . 'ТДМ'. DIRECTORY_SEPARATOR . 'МСК'. DIRECTORY_SEPARATOR);
 
 
-define('FILES_PATH', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR. 'II' . DIRECTORY_SEPARATOR);
-define('DEMAND', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR. 'demand' . DIRECTORY_SEPARATOR);
+define('FILES_PATH', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR. '01. НВО Прайсы и остатки' . DIRECTORY_SEPARATOR);
+define('DEMAND', $root . 'mydomain.ru' . DIRECTORY_SEPARATOR. 'АО объекта' . DIRECTORY_SEPARATOR);
 define('VIEWS_PATH', '..' .DIRECTORY_SEPARATOR. 'views' . DIRECTORY_SEPARATOR);
 
 require APP_PATH . 'App.php';

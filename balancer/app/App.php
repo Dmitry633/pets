@@ -186,7 +186,7 @@ function getVendor (array $getedArr) {
     }
     
     match (1) {
-      (preg_match('/(?i)(iek)/',$item['C'])) => $demandIEK[] = $item,// print 'эту позицию необходимо искать в остатках ИЭК' . "\n",
+      (preg_match('/(?i)(iek)|(?i)(oni)/',$item['C'])) => $demandIEK[] = $item,// print 'эту позицию необходимо искать в остатках ИЭК' . "\n",
       (preg_match('/(?i)(ekf)/',$item['C'])) =>  $demandEKF[] = $item,// print 'эту позицию необходимо искать в остатках ЭКФ'. "\n",
       (preg_match('/(?i)(dek)|(?i)(systeme)/',$item['C'])) =>  $demandSE[] = $item,
       (preg_match('/(?i)(tdm)/',$item['C'])) =>  $demandTDM[] = $item,
